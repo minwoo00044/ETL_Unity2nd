@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace FSM
@@ -33,12 +34,15 @@ namespace FSM
             current = newID; // 상태 갱신
             states[current].OnEnter(); // 새로운 상태로 진입
             _isDirty = true;
+            Debug.Log($"Changed state to {newID}");
             return true;
         }
 
         protected virtual void Initialize(IEnumerable<KeyValuePair<int, IState>> copy)
         {
             this.states = new Dictionary<int, IState>(copy);
+            current = 1;
+            states[current].OnEnter();
         }
 
         public void Update()
@@ -55,5 +59,6 @@ namespace FSM
         {
             _isDirty = false;
         }
+
     }
 }

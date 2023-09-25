@@ -7,9 +7,10 @@ namespace FSM
         public static IEnumerable<KeyValuePair<int, IState>> GetPlayerData(StateMachine machine)
         {
             return new Dictionary<int, IState>()
-        {
-            { 0, new Move(0, machine) },
-        };
+            {
+                { 1, new Move(1, machine) },
+                { 2, new Jump(2, machine) }, 
+            };
         }
     }
 }
