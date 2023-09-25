@@ -1,24 +1,23 @@
 namespace FSM
 {
-    public class Move : StateBase
+    public class Fall : StateBase
     {
-        public Move(int id, StateMachine machine) : base(id, machine)
+        public Fall(int id, StateMachine machine) : base(id, machine)
         {
         }
-
         public override void OnEnter()
         {
             base.OnEnter();
-            animator.Play("Move");
-            controller.isMovable = true;
+            animator.Play("Fall");
+            controller.isMovable = false;
         }
         public override int OnUpdate()
         {
             int next = base.OnUpdate();
             if (next < 0)
                 return id;
-            if(controller.isGrounded == false)
-                next = FALL;
+            if (controller.isGrounded)
+                next = MOVE;
             return next;
         }
     }

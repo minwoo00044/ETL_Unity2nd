@@ -4,6 +4,10 @@ namespace FSM
 {
     public abstract class StateBase : IState
     {
+
+        public const int MOVE = 1;
+        public const int JUMP = 2;
+        public const int FALL = 3;
         public int id { get; private set; }
 
         public virtual bool canExecute => true;
@@ -13,6 +17,8 @@ namespace FSM
         protected Transform transform;
         protected Rigidbody rb;
         protected Animator animator;
+
+        private bool _hasFixedUpdatedAtVeryFirst;
         public StateBase(int id, StateMachine machine)
         {
             this.id = id;
@@ -20,11 +26,12 @@ namespace FSM
             this.controller = machine.owner.GetComponent<PlayerController>();
             this.transform = machine.owner.GetComponent<Transform>();
             this.rb = machine.owner.GetComponent<Rigidbody>();
-            this.animator = machine.owner.GetComponent<Animator>();
+            this.animator = machine.owner.GetComponentInChildren<Animator>();
         }
 
         public virtual void OnEnter()
         {
+            _hasFixedUpdatedAtVeryFirst = false;
         }
 
         public virtual void OnExit()
@@ -33,11 +40,13 @@ namespace FSM
 
         public virtual void OnFixedUpdate()
         {
+            if(_hasFixedUpdatedAtVeryFirst == false)
+                _hasFixedUpdatedAtVeryFirst = true;
         }
 
         public virtual int OnUpdate()
         {
-            return id;
+            return _hasFixedUpdatedAtVeryFirst ? id : -1;
         }
     }
 }
